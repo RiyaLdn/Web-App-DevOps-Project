@@ -7,5 +7,5 @@ output "aks_cluster_id" {
 }
 
 output "aks_kubeconfig" {
-  value = azurerm_kubernetes_cluster.aks_cluster.kube_config[0].raw_kube_config
+  value = azurerm_kubernetes_cluster.aks_cluster.kube_config_raw
 }
