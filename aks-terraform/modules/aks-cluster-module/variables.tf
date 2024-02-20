@@ -18,17 +18,18 @@ variable "kubernetes_version" {
   type        = string
 }
 
-variable "service_principal_client_id" {
+variable "client_id" {
   description = "Client ID for the service principal associated with the cluster."
   type        = string
 }
 
-variable "service_principal_secret" {
+variable "client_secret" {
   description = "Client Secret for the service principal associated with the cluster."
   type        = string
 }
 
 # Input variables from the networking module
+
 variable "resource_group_name" {
   description = "Name of the Azure Resource Group."
   type        = string
@@ -48,3 +49,4 @@ variable "worker_node_subnet_id" {
   description = "ID of the worker node subnet created by the networking module."
   type        = string
 }
+
