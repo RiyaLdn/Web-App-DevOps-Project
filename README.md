@@ -81,7 +81,7 @@ To run the application, you simply need to run the `app.py` script in this repos
 
 ### Containerization Process
 
-A Dockerfile is used for this application, encapsulating all necessary dependencies and configuration settings. In particular: 
+A Dockerfile is used to containerize this application, encapsulating all necessary dependencies and configuration settings. In particular: 
 
 - It defines the steps required to build the Docker image for the application.
 - Sets up the working directory.
