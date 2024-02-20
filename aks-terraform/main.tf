@@ -41,3 +41,4 @@ module "aks-cluster-module" {
   worker_node_subnet_id       = module.networking.worker_node_subnet_id
 } 
 
+

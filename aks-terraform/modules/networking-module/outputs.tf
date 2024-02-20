@@ -17,3 +17,5 @@ output "networking_resource_group_name" {
 output "aks_nsg_id" {
   value = azurerm_network_security_group.aks_nsg.id
 }
+
+ 
