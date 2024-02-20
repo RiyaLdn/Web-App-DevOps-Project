@@ -145,8 +145,8 @@ CMD ["python", "app.py"]
 
 2. **Instructions for Use:**
 
-1. To run the Dockerized application, run this command: `docker run -p port:port your-image-name:your-tag`. 
-2. This will start the application within the Docker container. Access it at `http://127.0.0.1:5000`.
+     - To run the Dockerized application, run this command: `docker run -p port:port your-image-name:your-tag`.
+     - This will start the application within the Docker container. Access it at `http://127.0.0.1:5000`.
 
 
 ## Contributors 
