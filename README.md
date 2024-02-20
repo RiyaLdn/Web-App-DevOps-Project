@@ -132,20 +132,20 @@ CMD ["python", "app.py"]
 ### Docker Commands
 
 1. **Building the Docker Image:** ``` docker build -t your-image-name:your-tag . ``` This command builds a Docker image from the current directory and tags it with the specified name and tag. Make sure to replace `your-image-name:your-tag` with the specified name and tag. 
-2. **Running Containers:** ``` docker run -p 5000:5000 your-image-name:your-tag ``` This command runs a container based on the specified image. It also maps port 5000 on the host to port 5000 in the container. 
-3. **Tagging Image:** ``` docker tag python:3.8-slim your-dockerhub-username/your-repo:your-tag ``` This command tags the image. Replace `your-dockerhub-username` and `your-repo:your-tag` with the actual information.
+2. **Running Containers:** ``` docker run -p port:port your-image-name:your-tag ``` This command runs a container based on the specified image. It also maps port 5000 on the host to port 5000 in the container. 
+3. **Tagging Image:** ``` docker tag your-image-name:your-tag your-dockerhub-username/your-repo:your-tag ``` This command tags the image. Replace `your-dockerhub-username` and `your-repo:your-tag` with the actual information.
 4. **Pushing Image to Docker Hub:** ``` docker push your-dockerhub-username/your-repo:your-tag ``` This command pushes the image to Docker Hub. 
 
 ### Image Information
 
 1. **Docker Image Details:**
-     - `your-image-name`: `python`
-     - `your-tag`: `3.8-slim`
-     - Port: `5000`
+     - `your-image-name` = `python`
+     - `your-tag` = `3.8-slim`
+     - `port` = `5000`
 
 2. **Instructions for Use:**
 
-1. To run the Dockerized application, run this command: `docker run -p 5000:5000 your-image-name:your-tag`. 
+1. To run the Dockerized application, run this command: `docker run -p port:port your-image-name:your-tag`. 
 2. This will start the application within the Docker container. Access it at `http://127.0.0.1:5000`.
 
 
