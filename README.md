@@ -5,6 +5,7 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
 ## Table of Contents
 
 - [Features](#features)
+- [Reverted Feature](#reverted-feature)
 - [Getting Started](#getting-started)
 - [Technology Stack](#technology-stack)
 - [Contributors](#contributors)
@@ -25,6 +26,23 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
 ![Screenshot 2023-08-31 at 15 49 26](https://github.com/maya-a-iuga/Web-App-DevOps-Project/assets/104773240/83236d79-6212-4fc3-afa3-3cee88354b1a)
 
 - **Data Validation:** Ensure data accuracy and completeness with required fields, date restrictions, and card number validation.
+
+## Reverted Feature
+
+- **Delivery Date:** The Delivery Date feature was designed to easily track the delivery date for orders being made. While the feature has been reverted, this section provides insights into its purpose and functionality. 
+
+### Re-Implementing the Feature
+
+To re-implement the delivery date feature, follow the steps below: 
+
+1. **Step 1:** Modify the order class in the `app.py` file. Add a `delivery-date` column to the class attributes.
+2. **Step 2:** In the route to add orders section of code, `app.route`, update the form to include the `deliver_date` field.
+3. **Step 3:** Also in the route to add orders section of code, `app.route`, add `delivery_date` to the bottom of the `new_order` variables list.
+4. **Step 4:** In the `order.html` template, update the table header and rows to include the `delivery_date` column. Modify the `<th>` elements and the `{% for order in orders %}` loop accordingly.
+5. **Step 5:** Again, in the `order.html` template, modify the `<form>` element to include an input field for the `delivery_date` column.
+
+These are all the steps necessary to facilitate all the functionality of the web application to support a new column `delivery_date`.
+
 
 ## Getting Started
 

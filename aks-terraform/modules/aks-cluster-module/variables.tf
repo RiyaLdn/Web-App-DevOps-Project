@@ -49,3 +49,4 @@ variable "worker_node_subnet_id" {
   description = "ID of the worker node subnet created by the networking module."
   type        = string
 }
+
