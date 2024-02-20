@@ -1,6 +1,3 @@
-provider "azurerm" {
-  features = {}
-}
 
 resource "azurerm_kubernetes_cluster" "aks_cluster" {
   name                = var.aks_cluster_name
@@ -20,8 +17,8 @@ default_node_pool {
   }
 
 service_principal {
-    client_id     = var.service_principal_client_id
-    client_secret = var.service_principal_secret
+    client_id     = var.client_id
+    client_secret = var.client_secret
   }
 
 }
