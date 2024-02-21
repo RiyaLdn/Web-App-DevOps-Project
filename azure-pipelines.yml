@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  vmImage: 'python-latest'
+  vmImage: my_image.1
 
 steps:
 - task: Docker@2
