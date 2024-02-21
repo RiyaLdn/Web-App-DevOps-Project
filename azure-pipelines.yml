@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  vmImage: riyaldn/my_image.1
+  vmImage: python:3.8-slim
 
 steps:
 - task: Docker@2
