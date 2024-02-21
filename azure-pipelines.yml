@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  vmImage: d218bb4855d5c5b5a4637e7851add8f2506618b527c501cc5c41aa23d520dbb5
+  vmImage: python-latest
 
 steps:
 - task: Docker@2
