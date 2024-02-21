@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  vmImage: my_image.1
+  vmImage: my_image
 
 steps:
 - task: Docker@2
