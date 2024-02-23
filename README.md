@@ -14,11 +14,11 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
     - [Docker Commands](#docker-commands)
     - [Image Information](#image-information)
  - [Infrastructure as Code with Terraform](#infrastructure-as-code-with-Terraform)
-    -[Introduction](#introduction)
-    -[Terraform Modules](#terraform-modules)
-            -[Networking Module](#networking-module)
-            -[AKS Cluster Module](#aks-cluster-module)
-    -[Main Project Configuration](#main-project-configuration)
+    - [Introduction](#introduction)
+    - [Terraform Modules](#terraform-modules)
+            - [Networking Module](#networking-module)
+            - [AKS Cluster Module](#aks-cluster-module)
+    - [Main Project Configuration](#main-project-configuration)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -176,7 +176,7 @@ The following networking resources are provisioned within this module:
 - Worker Node Subnet: a subnet within the Virtual Network dedicated to hosting the worker nodes of an AKS cluster. 
 - Network Security Group (NSG): a security rule set that controls inbound and outbound traffic to network interfaces (NIC), VMs, and subnets.
 
-To reference the configuration in the relevant file, check out [main.tf](./networking-module/main.tf).  
+To reference the configuration in the relevant file, check out [main.tf](aks-terraform/modules/networking-module/main.tf).  
 
 2. **Input Variables**
 
