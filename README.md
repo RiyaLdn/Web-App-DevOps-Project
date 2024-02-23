@@ -184,7 +184,7 @@ To reference the configuration in the relevant file, check out [main.tf](aks-ter
 - `location`:  This variable defines the geographic location where the Azure Resource Group and associated resources, including the Virtual Network, will be created.
 - `vnet_address_space`: This variable allows you to define the IP address range for the VNet, determining the private IP address space that can be used for subnets and associated resources within the VNet.
 
-To reference the configuration in the relevant file, check out [variables.tf](./networking-module/variables.tf). 
+To reference the configuration in the relevant file, check out [variables.tf](aks-terraform/modules/networking-module/variables.tf). 
 
 3. **Output Variables**
 
@@ -195,7 +195,7 @@ To reference the configuration in the relevant file, check out [variables.tf](./
 
 All of these output variables are essential for creating easy reference, integration, and configuration with other modules and components in the project. 
 
-To reference the configuration in the relevant file, check out [outputs.tf](./networking-module/outputs.tf). 
+To reference the configuration in the relevant file, check out [outputs.tf](aks-terraform/modules/networking-module/outputs.tf). 
 
 
 #### AKS Cluster Module
