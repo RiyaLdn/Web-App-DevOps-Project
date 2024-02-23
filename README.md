@@ -13,6 +13,11 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
     - [Containerization Process](#containerization-process)
     - [Docker Commands](#docker-commands)
     - [Image Information](#image-information)
+ - [Infrastructure as Code (IaC) with Terraform](infrastructure-as-code-(IaC)-with-Terraform)
+    - [Terraform Modules](terraform-modules)
+        -[Networking Module](networking-module)
+        -[AKS Cluster Module](aks-cluster-module)
+      -[Main Project Configuration](main-project-configuration)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -76,6 +81,8 @@ To run the application, you simply need to run the `app.py` script in this repos
 - **Database:** The application employs an Azure SQL Database as its database system to store order-related data.
 
 - **Containerization:** Docker is utilised to create a containerized environment for the app, to ensure seamless deployment and scalability.
+
+- **Infrastructure as Code (Iac):** Terraform is leveraged for the deployment, scalability and orchastration of the containerized application seamlessly on Azure Kubernetes Service (AKS). 
 
 ## Containerization with Docker
 
@@ -142,6 +149,10 @@ CMD ["python", "app.py"]
      - `your-image-name` = `python`
      - `your-tag` = `3.8-slim`
      - `port` = `5000`
+
+## Infrastructure as Code (IaC) with Terraform
+
+ADD LINKS TO RELEVANT FILES IN THE FOLDER, INSTEAD OF ADDING THE WHOLE CODE LIKE FOR DOCKER. CAN PROBABLY CHANGE THIS FOR DOCKER TOO. 
 
 2. **Instructions for Use:**
 
