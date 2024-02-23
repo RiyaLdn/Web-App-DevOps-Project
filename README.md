@@ -13,11 +13,12 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
     - [Containerization Process](#containerization-process)
     - [Docker Commands](#docker-commands)
     - [Image Information](#image-information)
- - [Infrastructure as Code (IaC) with Terraform](infrastructure-as-code-(IaC)-with-Terraform)
-    - [Terraform Modules](terraform-modules)
-        -[Networking Module](networking-module)
-        -[AKS Cluster Module](aks-cluster-module)
-      -[Main Project Configuration](main-project-configuration)
+ - [Infrastructure as Code (IaC) with Terraform](#infrastructure-as-code-(IaC)-with-Terraform)
+    -[Introduction](#introduction)
+    -[Terraform Modules](#terraform-modules)
+            -[Networking Module](#networking-module)
+            -[AKS Cluster Module](#aks-cluster-module)
+    -[Main Project Configuration](#main-project-configuration)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -156,6 +157,55 @@ CMD ["python", "app.py"]
      - This will start the application within the Docker container. Access it at `http://127.0.0.1:5000`.
 
 ## Infrastructure as Code (IaC) with Terraform
+
+### Introduction
+
+Within this section, we will cover the process of defining networking services and AKS Cluster services using Terraform. Specifically this section will explain how each resource is created, its purpose, and its dependencies. 
+
+### Terraform Modules
+
+#### Networking Module
+
+1. **Resources** 
+
+The following networking resources are provisioned within this module:
+
+- Azure Resource Group: allows for the organisation and management of related Azure resources, such as VMs, storage accounts, virtual networking, etc.
+- Virtual Network (VNet): allows to securely connect Azure resources and to on-premises networks.
+- Control Plane Subnet: a subnet within the Virtual Network that hosts the control plane components of Azure Kubernetes Service (AKS).
+- Worker Node Subnet: a subnet within the Virtual Network dedicated to hosting the worker nodes of an AKS cluster. 
+- Network Security Group (NSG): a security rule set that controls inbound and outbound traffic to network interfaces (NIC), VMs, and subnets.
+
+To reference the configuration in the relevant file, check out [main.tf](./networking-module/main.tf).  
+
+2. **Input Variables**
+
+- `resource_group_name`: This variable allows you to specify the logical container in which all networking resources, such as VNets and subnets, will be organised.
+- `location`:  This variable defines the geographic location where the Azure Resource Group and associated resources, including the Virtual Network, will be created.
+- `vnet_address_space`: This variable allows you to define the IP address range for the VNet, determining the private IP address space that can be used for subnets and associated resources within the VNet.
+
+To reference the configuration in the relevant file, check out [variables.tf](./networking-module/variables.tf). 
+
+3. **Output Variables**
+
+-`vnet_id`: allows reference to the VNet, allowing other modules/components to associate with this specific network. 
+`control_plane_subnet`: allows reference to the control plane subnet for configuring AKS-specific settings or associating resources.
+`worker_node_subnet_id`: allows reference to where worker nodes are deployed, for configuration with other components.
+`aks_nsg_id`: allows reference to the NSG associated with the AKS cluster, allowing for configuration with other resources. 
+
+All of these output variables are essential for creating easy reference, integration, and configuration with other modules and components in the project. 
+
+To reference the configuration in the relevant file, check out [outputs.tf](./networking-module/outputs.tf). 
+
+
+#### AKS Cluster Module
+
+1. **Resources**
+2. **Input Variables**
+3. **Output Variables**
+
+
+
 
 ADD LINKS TO RELEVANT FILES IN THE FOLDER, INSTEAD OF ADDING THE WHOLE CODE LIKE FOR DOCKER. CAN PROBABLY CHANGE THIS FOR DOCKER TOO. 
 
