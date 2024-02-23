@@ -150,14 +150,15 @@ CMD ["python", "app.py"]
      - `your-tag` = `3.8-slim`
      - `port` = `5000`
 
-## Infrastructure as Code (IaC) with Terraform
-
-ADD LINKS TO RELEVANT FILES IN THE FOLDER, INSTEAD OF ADDING THE WHOLE CODE LIKE FOR DOCKER. CAN PROBABLY CHANGE THIS FOR DOCKER TOO. 
-
 2. **Instructions for Use:**
 
      - To run the Dockerized application, run this command: `docker run -p port:port your-image-name:your-tag`.
      - This will start the application within the Docker container. Access it at `http://127.0.0.1:5000`.
+
+## Infrastructure as Code (IaC) with Terraform
+
+ADD LINKS TO RELEVANT FILES IN THE FOLDER, INSTEAD OF ADDING THE WHOLE CODE LIKE FOR DOCKER. CAN PROBABLY CHANGE THIS FOR DOCKER TOO. 
+
 
 
 ## Contributors 
