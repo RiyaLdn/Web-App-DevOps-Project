@@ -13,7 +13,7 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
     - [Containerization Process](#containerization-process)
     - [Docker Commands](#docker-commands)
     - [Image Information](#image-information)
- - [Infrastructure as Code (IaC) with Terraform](#infrastructure-as-code-(IaC)-with-Terraform)
+ - [Infrastructure as Code with Terraform](#infrastructure-as-code-with-Terraform)
     -[Introduction](#introduction)
     -[Terraform Modules](#terraform-modules)
             -[Networking Module](#networking-module)
@@ -156,7 +156,7 @@ CMD ["python", "app.py"]
      - To run the Dockerized application, run this command: `docker run -p port:port your-image-name:your-tag`.
      - This will start the application within the Docker container. Access it at `http://127.0.0.1:5000`.
 
-## Infrastructure as Code (IaC) with Terraform
+## Infrastructure as Code with Terraform
 
 ### Introduction
 
@@ -188,10 +188,10 @@ To reference the configuration in the relevant file, check out [variables.tf](./
 
 3. **Output Variables**
 
--`vnet_id`: allows reference to the VNet, allowing other modules/components to associate with this specific network. 
-`control_plane_subnet`: allows reference to the control plane subnet for configuring AKS-specific settings or associating resources.
-`worker_node_subnet_id`: allows reference to where worker nodes are deployed, for configuration with other components.
-`aks_nsg_id`: allows reference to the NSG associated with the AKS cluster, allowing for configuration with other resources. 
+- `vnet_id`: allows reference to the VNet, allowing other modules/components to associate with this specific network. 
+- `control_plane_subnet`: allows reference to the control plane subnet for configuring AKS-specific settings or associating resources.
+- `worker_node_subnet_id`: allows reference to where worker nodes are deployed, for configuration with other components.
+- `aks_nsg_id`: allows reference to the NSG associated with the AKS cluster, allowing for configuration with other resources. 
 
 All of these output variables are essential for creating easy reference, integration, and configuration with other modules and components in the project. 
 
