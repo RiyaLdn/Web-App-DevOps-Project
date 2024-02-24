@@ -162,6 +162,28 @@ CMD ["python", "app.py"]
 
 Within this section, we will cover the process of defining networking services and AKS Cluster services using Terraform. Specifically this section will explain how each resource is created, its purpose, and its dependencies. 
 
+### Terraform Provider Setup
+
+Within the main configuration file, we have used the Azure provider for Terraform. Below is an example of the provider configuration we have used in this project: 
+
+```
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=3.0.0"
+    }
+  }
+}
+
+provider "azurerm" {
+  features {}
+client_id = var.client_id
+client_secret = var.client_secret
+subscription_id = var.subscription_id
+tenant_id = var.tenant_id
+}
+```
 ### Terraform Modules
 
 #### Networking Module
@@ -201,10 +223,48 @@ To reference the configuration in the relevant file, check out [outputs.tf](aks-
 #### AKS Cluster Module
 
 1. **Resources**
-2. **Input Variables**
-3. **Output Variables**
 
+The following AKS CLuster resources are provisioned within this module:
 
+- Azure Kubernetes Cluster: serves as the orchestration platform for the containerised application. It provides a scalable environment for running containers.
+- Default Node Pool: This default node pool hosts the workload of the application and can be scaled based on demand. 
+- Service Principle: The service principle allows the AKS Cluster to interact with other Azure resources securely.
+
+To reference this configuration in the relevant file, check out [main.tf](aks-terraform/modules/aks-cluster-module/main.tf).
+
+3. **Input Variables**
+
+- `aks_cluster_name`: this variable represents the name assigned to the AKS cluster.
+- `cluster_location`: specifies the Azure region where the AKS cluster will be deployed. 
+- `dns_prefix`: defines the DNS prefix for the AKS cluster; this allows for the application to be accessed over the internet.
+- `kubernetes_version`: specifies the version of Kubernetes that the AKS cluster will use.
+- `client_id`: aa ID that is associated with the service principle, which is used for secure  authentication and access to the AKS cluster. 
+- `client_secret`: a secure credential that is associated with the service principle, which is used for secure authentication and access to the AKS cluster. 
+
+    **Input Variables from Networking Module**
+
+    These variables are integrated from the networking module into the AKS cluster module. This is necessary as    the networking module plays an important role in establishing the networking resources for the AKS cluster.
+  
+    - `resource_group_name`
+    - `vnet_id`
+    - `control_plane_subnet`
+    - `worker_node_subnet_id`
+
+To reference this configuration in the relevant file, check out [variables.tf](aks-terraform/modules/aks-cluster-module/variables.tf).
+
+5. **Output Variables**
+
+- `aks_cluster_name`: this output variable is useful for obtaining the AKS cluster name after it has been successfully provisioned
+- `aks_cluster_id`: a unique identifier associated with the provisoned cluster. 
+- `aks_kubeconfig`: captures the Kubernetes configuration file for the AKS cluster. This file is essential for using tools like `kubectl` to interact with the AKS cluster.
+
+To reference this configuration in the relevant file, check out [outputs.tf](aks-terraform/modules/aks-cluster-module/outputs.tf).
+
+### Main Project Configuration
+
+#### Connecting to the Networking Module 
+
+#### Connecting to the AKS Cluster
 
 
 ADD LINKS TO RELEVANT FILES IN THE FOLDER, INSTEAD OF ADDING THE WHOLE CODE LIKE FOR DOCKER. CAN PROBABLY CHANGE THIS FOR DOCKER TOO. 
