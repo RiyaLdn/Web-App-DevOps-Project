@@ -23,6 +23,9 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
      - [Deployment and Service](#deployment-and-service)
      - [Deployment Strategy](#deployment-strategy)
      - [Testing and Validation](#testing-and-validation)
+- [CI/CD Pipeline with Azure DevOps](#ci/cd-pipeline-with-azure-devops)
+     - [Configurations and Settings](#configurations-and-settings)
+     - [Validation and Testing](#validation-and-testing)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -382,10 +385,86 @@ Ingress controllers with a Service type of LoadBalancers are designed to handle 
 
 To maintain secure external access to the application, it is possible to implement SSL termination in this case. 
 
+## CI/CD Pipeline with Azure DevOps
+
+This section provides detailed information about the Continuous Integration and Continuous Deployment (CI/CD) pipeline implemented using Azure DevOps for this project.
+
+### Configuration and Settings
+
+#### Source Repository
+
+The source code for this project is hosted in GitHub. The repository contains all the necessary code and configurations for building and deploying the application.
+
+#### Build Pipeline
+
+1. The **Starter Pipeline** template was used as a foundation to build and customise our pipeline.
+  
+- **Trigger:** For this particular project, we configured the build pipeline to automatically run each time there is a push to the main branch of the application repository.
+- **Pool:** Based on the requirements of this project, we used an Ubuntu-based image: `vmImage: ubuntu-latest`.
+- **Steps:** For this section, the specific requirements necessary are as follows:
+
+```
+steps:
+- task: Docker@2
+  inputs:
+    containerRegistry: 'Docker Hub'
+    repository: 'riyaldn/boring_meitner'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: 'latest'
+```
+
+2. The **Build and Push** command was used to build the Docker image and push it to Docker Hub. The [Dockerfile](dockerfile) was used to help build this image. 
+
+The build pipeline is defined in the [azure-pipelines.yml](azure-pipelines.yml) file.
+
+#### Release Pipeline
+
+The release pipeline is responsible for deploying the application to the Azure Kubernetes Service (AKS) cluster. It takes artifacts produced by the build pipeline and deploys them through defined stages.
+
+1. **Kubernetes Deployment**
+   
+        - The "Deploy to Kubernetes" task was incorporated here to facilitate the deployment of the application to the AKS cluster.
+
+The specific requirements for this section are as follows:
+
+```
+- task: KubernetesManifest@1
+  inputs:
+    action: 'deploy'
+    connectionType: 'azureResourceManager'
+    azureSubscriptionConnection: 'Riya AKS Service Connection'
+    azureResourceGroup: 'networking-resource-group'
+    kubernetesCluster: 'terraform-aks-cluster'
+    manifests: 'application-manifest.yaml'
+```
+The release pipeline is defined in the [azure-pipelines.yml](azure-pipelines.yml) file.
+
+#### Integration with Docker Hub and AKS
+
+It is necessary to set up a service connection between Azure DevOps and the Docker Hub account where the application image is stored. This is to facilitate the seamless integration of the CI/CD pipeline with the Docker Hub container registry. This was done by:
+
+1. Creating a personal access token on Docker Hub.
+2. Configuring an Azure DevOps service connection to utilize this token.
+3. Verifying that the connection had been successfully established.
+
+
+### Validation and Testing
+
+After configuring the CI/CD pipeline, including both the build and release components, it is necessary to test and validate its functionality. This ensures seamless execution of the deployment process and verifies that the application performs as expected on the AKS cluster. This was done by: 
+
+1. Monitoring the current status of the pods using `kubectl get pods`.
+2. For a more detailed inspection of the pods and their health, we used `kubectl describe pod <pod-name>`.
+3. To verify that the application was released and performed as expected, we used `kubectl port-forward <pod-name> 5000:5000`.
+4. Once the port forward was completed, we were able to access the application successfully at http://127.0.0.1:5000. 
+
+
+
 
 ## Contributors 
 
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
+- [Riya Longia]
 
 ## License
 
