@@ -6,6 +6,21 @@ from sqlalchemy import create_engine
 import pyodbc
 import os
 
+
+from azure.identity import ManagedIdentityCredential
+from azure.keyvault.secrets import SecretClient
+
+key_vault_url = "https://RiyaKey.vault.azure.net/"
+
+credential = ManagedIdentityCredential()
+secret_client = SecretClient(vault_url=key_vault_url, credential=credential)
+
+secret = secret_client.get_secret("secret-name")
+
+
+secret_value = secret.value
+
+
 # Initialise Flask App
 app = Flask(__name__)
 
@@ -15,6 +30,8 @@ database = 'orders-db'
 username = 'maya'
 password = 'AiCore1237'
 driver= '{ODBC Driver 18 for SQL Server}'
+
+
 
 # Create the connection string
 connection_string=f'Driver={driver};\
