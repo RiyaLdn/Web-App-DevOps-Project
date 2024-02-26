@@ -297,7 +297,7 @@ module "aks-cluster-module" {
 
 ```
 
-To view the main project configuration file, check out [main.tf](aks-terraform/modules/main.tf)
+To view the main project configuration file, check out [main.tf](aks-terraform/main.tf)
 
 
 
