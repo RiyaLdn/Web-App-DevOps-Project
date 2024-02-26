@@ -687,14 +687,14 @@ Replace <managed-identity-client-id> with the actual Managed Identity's client I
 
 Finally, we had to create some changes to the application code to incorporate the Managed Identity credentials. This means we can securely retrieve the database connection details from the Key Vault.
 
-In the [app.py](app.py) file, we added the following libraries: 
+In the [app.py](app.py) file, we added the following libraries. You must also add these libraries in the [requirements.txt](requirements.txt) file. 
 
 ```
 pip install azure-identity
 pip install azure-keyvault-secrets
 ```
 
-Then the following changes were made to the code: 
+Then the following changes were made to the [app.py](app.py) code: 
 
 ```
 from azure.identity import ManagedIdentityCredential
