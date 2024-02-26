@@ -330,6 +330,8 @@ To check out the deployment and service manifests file, check out [application-m
 
 ### Deployment Strategy 
 
+#### Rolling Updates 
+
 For this particular application, we have decided to implement the Rolling Updates strategy, based on a variety of reasons. Utilising the Rolling Updates strategy allows us to update our application with minimal downtime. During updates, one pod deploys while another becomes temporarily unavailable, maintaining continuous application availability.
 
 This Rolling Updates strategy also supports scalability by allowing the deployment of multiple replicas concurrently, ensuring our application can handle increased load. 
