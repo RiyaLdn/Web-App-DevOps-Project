@@ -19,6 +19,7 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
                 - [Networking Module](#networking-module)
                 - [AKS Cluster Module](#aks-cluster-module)
     - [Main Project Configuration](#main-project-configuration)
+- [Kubernetes Deployment to AKS](#kubernetes-deployment-to-AKS)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -83,7 +84,9 @@ To run the application, you simply need to run the `app.py` script in this repos
 
 - **Containerization:** Docker is utilised to create a containerized environment for the app, to ensure seamless deployment and scalability.
 
-- **Infrastructure as Code (Iac):** Terraform is leveraged for the deployment, scalability and orchastration of the containerized application seamlessly on Azure Kubernetes Service (AKS). 
+- **Infrastructure as Code (Iac):** Terraform is leveraged to create configuration files to assist with deployment, scalability, and orchestration of the containerized application seamlessly on Azure Kubernetes Service (AKS).
+
+- **Orchestration:** The open-source container application platform, Kubernetes, is used for automating the deployment, scaling, and management of the containerized application. 
 
 ## Containerization with Docker
 
@@ -299,6 +302,80 @@ module "aks-cluster-module" {
 
 To view the main project configuration file, check out [main.tf](aks-terraform/main.tf)
 
+## Kubernetes Deployment to AKS 
+
+### Deployment and Service Manifests
+
+#### Deployment
+
+The Deployment manifest for this application defines the desired state for the deployment of the containerized web application. The key configurations are as follows: 
+
+- **Pod Replicas:** For this particular application we chose to have 2 pod replicas, to ensure scalability and high availability of the application.
+- **Selectors and Labels:** For this particular application, we have used selectors and labels to uniquely identify the application. In this case, we have used `app:flask-app` as a label establishing a clear connection between the pods and the application being managed. 
+- **Container Configuration:** The manifest is configured to point to the specific Docker Hub container housing our application. The Docker image (`riyaldn/my_image.1`) and its version are crucial parameters to ensure the correct image is used.
+- **Port Configuration:** For this application, we have exposed port 5000 to enable communication within the AKS cluster, serving as the gateway for accessing the application's user interface. 
+
+#### Service 
+
+The Service manifest is necessary for facilitating internal communication with the AKS cluster. The key configurations are as follows: 
+
+- **Service Type:** For this particular application, we have used a ClusterIP service type, designating it as it is an internal service within the AKS cluster. 
+- **Selector Matching:** The service selector matches the labels (app: flask-app) of the pods defined in the Deployment manifest. This alignment guarantees that the traffic is efficiently directed to the appropriate pods, maintaining seamless internal communication within the AKS cluster.
+- **Port Configuration:** The service uses TCP protocol on port 80 for internal communication within the cluster, with the target port set to 5000, aligning with the port exposed by our container.
+
+To check out the deployment and service manifests file, check out [application-mainfest.yaml](application-manifest.yaml)
+
+### Deployment Strategy 
+
+For this particular application, we have decided to implement the Rolling Updates strategy, based on a variety of reasons. Utilising the Rolling Updates strategy allows us to update our application with minimal downtime. During updates, one pod deploys while another becomes temporarily unavailable, maintaining continuous application availability.
+
+This Rolling Updates strategy also supports scalability by allowing the deployment of multiple replicas concurrently, ensuring our application can handle increased load. 
+
+### Testing and Validation
+
+Once the Kubernetes manifests are deployed to AKS, it is necessary to conduct thorough testing to validate functionality and reliability within the AKS cluster. The following checks are conducted:
+
+- **Pod Validation:** To check all the pods were running as expected, we used the command `kubectl get pods`. 
+- **Service Validation:** We confirmed that services were correctly exposed within the cluster, allowing internal communication.
+- **Port Forwarding:** To initiate port forwarding, we used the command, `kubectl port-forward <pod-name> 5000:5000`, to access and interact with the application locally at http://127.0.0.1:5000.
+
+Through conducting these tests, we can ensure the functionality and reliability of the application within the AKS cluster. 
+
+### Application Distribution 
+
+#### Internal Users 
+
+As this application is intended for internal use within an organisation, we can distribute the application to internal users without relying on the port forwarding method. We can do this by leveraging:
+
+- **LoadBalancer Service Type:**
+
+LoadBalancers would be an ideal method to distribute the application to internal users as the service will be exposed externally within the cluster. Meaning the service remains isolated within the organisation's network, preventing unauthorised access.
+
+1. Firstly, we would update the Service manifest and change the `type` field to `LoadBalancer`.
+2. Then we would apply the changes, `kubectl apply -f service.yaml`, and observe the external IP using `kubectl get services`.
+3. Finally, this IP address will be used as the entry point to accessing the service. 
+
+However, it must be noted that several other methods could also be used to distribute the service to other internal users. 
+
+#### External Users 
+
+Although this application is intended for internal use currently, if the need arises to share the application externally, we may leverage a different service type to distribute the application externally. We could do this by using: 
+
+- **Ingress Controllers:**
+
+Ingress controllers with a Service type of LoadBalancers are designed to handle HTTP/S traffic and provide a way to route external requests to different services based on URL paths. Therefore, this method would be ideal for opening the application up to external users.
+
+1. It is important to note, that to use this method, an ingress controller must be installed: 
+    a. To enable Ingress in Minikube, use the following command: `minikube addons enable ingress`. 
+    b. Verify the Ingress controller is working by checking the status of the pods: `kubectl get pods -n ingress-nginx`. 
+2. Next, we would start with a LoadBalancer service type, similar to the example given for [Internal Users](#internal-users).
+3. Then we would create an Ingress resource: `kind: Ingress`, and would follow the standard steps to define routing rules and other configurations.
+4. Apply the changes `kubectl apply -f ingress.yaml`.
+5. Finally, the service can be accessed by the IP address defined in the `host` field of the file.
+
+-**Security Considerations:** 
+
+To maintain secure external access to the application, it is possible to implement SSL termination in this case. 
 
 
 ## Contributors 
