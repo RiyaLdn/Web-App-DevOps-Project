@@ -31,6 +31,7 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
      - [Log Analytics](#log-analytics)
      - [Alarms](#alarms)
      - [Potential Response Procedures](#potential-response-procedures)
+- [AKS integration for Azure Key Vault for Secrets Management](#aks-integration-for-azure-key-vault-for-secrets-management)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -179,14 +180,14 @@ CMD ["python", "app.py"]
 
 ### Image Information
 
-1. **Docker Image Details:**
+**Docker Image Details:**
      - `your-image-name` = `python`
      
      - `your-tag` = `3.8-slim`
      
      - `port` = `5000`
 
-2. **Instructions for Use:**
+**Instructions for Use:**
 
      - To run the Dockerized application, run this command: `docker run -p port:port your-image-name:your-tag`.
      - This will start the application within the Docker container. Access it at `http://127.0.0.1:5000`.
@@ -201,7 +202,7 @@ Within this section, we will cover the process of defining networking services a
 
 #### Networking Module
 
-1. **Resources** 
+**Resources** 
 
 The following networking resources are provisioned within this module:
 
@@ -217,7 +218,7 @@ The following networking resources are provisioned within this module:
 
 To reference the configuration in the relevant file, check out [main.tf](aks-terraform/modules/networking-module/main.tf).  
 
-2. **Input Variables**
+**Input Variables**
 
 - `resource_group_name`: This variable allows you to specify the logical container in which all networking resources, such as VNets and subnets, will be organised.
 - `location`:  This variable defines the geographic location where the Azure Resource Group and associated resources, including the Virtual Network, will be created.
@@ -225,7 +226,7 @@ To reference the configuration in the relevant file, check out [main.tf](aks-ter
 
 To reference the configuration in the relevant file, check out [variables.tf](aks-terraform/modules/networking-module/variables.tf). 
 
-3. **Output Variables**
+**Output Variables**
 
 - `vnet_id`: allows reference to the VNet, allowing other modules/components to associate with this specific network. 
 
@@ -242,7 +243,7 @@ To reference the configuration in the relevant file, check out [outputs.tf](aks-
 
 #### AKS Cluster Module
 
-1. **Resources**
+**Resources**
 
 The following AKS CLuster resources are provisioned within this module:
 
@@ -254,7 +255,7 @@ The following AKS CLuster resources are provisioned within this module:
 
 To reference this configuration in the relevant file, check out [main.tf](aks-terraform/modules/aks-cluster-module/main.tf).
 
-3. **Input Variables**
+**Input Variables**
 
 - `aks_cluster_name`: this variable represents the name assigned to the AKS cluster.
 
@@ -268,7 +269,7 @@ To reference this configuration in the relevant file, check out [main.tf](aks-te
 
 - `client_secret`: a secure credential that is associated with the service principle, which is used for secure authentication and access to the AKS cluster. 
 
-    **Input Variables from Networking Module**
+**Input Variables from Networking Module**
 
     These variables are integrated from the networking module into the AKS cluster module. This is necessary as    the networking module plays an important role in establishing the networking resources for the AKS cluster.
   
@@ -282,7 +283,7 @@ To reference this configuration in the relevant file, check out [main.tf](aks-te
 
 To reference this configuration in the relevant file, check out [variables.tf](aks-terraform/modules/aks-cluster-module/variables.tf).
 
-5. **Output Variables**
+**Output Variables**
 
 - `aks_cluster_name`: this output variable is useful for obtaining the AKS cluster name after it has been successfully provisioned
   
@@ -383,7 +384,7 @@ To check out the deployment and service manifests file, check out [application-m
 
 ### Deployment Strategy 
 
-#### Rolling Updates 
+**Rolling Updates** 
 
 For this particular application, we have decided to implement the Rolling Updates strategy, based on a variety of reasons. Utilising the Rolling Updates strategy allows us to update our application with minimal downtime. During updates, one pod deploys while another becomes temporarily unavailable, maintaining continuous application availability.
 
@@ -407,7 +408,7 @@ Through conducting these tests, we can ensure the functionality and reliability 
 
 As this application is intended for internal use within an organisation, we can distribute the application to internal users without relying on the port forwarding method. We can do this by leveraging:
 
-- **LoadBalancer Service Type:**
+**LoadBalancer Service Type:**
 
 LoadBalancers would be an ideal method to distribute the application to internal users as the service will be exposed externally within the cluster. Meaning the service remains isolated within the organisation's network, preventing unauthorised access.
 
@@ -529,7 +530,7 @@ Enabling Container Insights for AKS Cluster Monitoring is crucial as it provides
 
 The following charts have been created and configured to show real-time data on the applications performance: 
 
-1. **Average Node CPU Usage**
+**Average Node CPU Usage**
 
 - Average Node CPU Usage indicates how much of the available CPU resources are being used on average.
 
@@ -539,7 +540,7 @@ The following charts have been created and configured to show real-time data on 
 
 ![Screenshot 2024-02-26 201404](https://github.com/RiyaLdn/Web-App-DevOps-Project/assets/150186735/cea87048-f731-45d0-b5d9-78644c261b9d)
 
-3. **Average Pod Count**
+**Average Pod Count**
 
 - Average Pod Count tracks the average number of pods running on each node in the Kubernetes cluster.
 
@@ -549,7 +550,7 @@ The following charts have been created and configured to show real-time data on 
 
 ![Screenshot 2024-02-26 201428](https://github.com/RiyaLdn/Web-App-DevOps-Project/assets/150186735/74642f69-ca8a-4cc4-9401-ac19475eda5c)
 
-4. **Used Disk Percentage**
+**Used Disk Percentage**
 
 - The Used Disk Percentage metric is a crucial indicator of storage consumption within your Kubernetes cluster.
 
@@ -559,7 +560,7 @@ The following charts have been created and configured to show real-time data on 
 
 ![Screenshot 2024-02-26 201454](https://github.com/RiyaLdn/Web-App-DevOps-Project/assets/150186735/cf97016d-e07d-479c-8203-27ea859a0d88)
 
-5. **Bytes Read and Written per Second**
+**Bytes Read and Written per Second**
 
 - This metric tracks the rate at which data is read from and written to storage devices on each node in the Kubernetes cluster.
 
@@ -622,7 +623,32 @@ Several response procedures can be activated when an alert is triggered. Below a
 
 - **Node Overload:** If nodes are reaching their capacity, auto-scaling can be configured in metrics. This can help dynamically adjust the number of nodes based on workloads. This would ensure optimal resource allocation.
 
-- **Low Disk Percentage:** There is also the possibility of the underutilisation of resources. If there is a consistently low disk percentage, it could be an indication that storage resources are inappropriately sized for the given workload. 
+- **Low Disk Percentage:** There is also the possibility of the underutilisation of resources. If there is a consistently low disk percentage, it could be an indication that storage resources are inappropriately sized for the given workload.
+
+## Azure Integration with Azure Key Vault for Secrets Management
+
+To enhance security and efficient secret management, we have integrated Azure Key Vault into our project. 
+
+### Azure Key Vault Setup 
+
+**Key Vault Creation** 
+
+- We began by creating a Key Vault in Azure, to safely store secrets.
+
+**Assigned Permissions**
+
+- To have full control over the Key Vault, I granted myself the highest level of access, known as the **Key Vault Administrator**. Administrators can manage access policies, configure advanced settings, and perform any operation within the Key Vault.
+
+
+
+
+ 
+### Secrets Stored in the Key Vault
+
+
+### AKS Integration with Key Vault
+
+### Changes to Application Code
 
 ## Contributors 
 
