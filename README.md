@@ -6,7 +6,7 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
 
 - [Features](#features)
 - [Reverted Feature](#reverted-feature)
-- [Re-implimenting the feature](#re-implimenting-the-feature)
+    - [Re-implimenting the feature](#re-implimenting-the-feature)
 - [Getting Started](#getting-started)
 - [Technology Stack](#technology-stack)
 - [Containerization with Docker](#containerization-with-docker)
@@ -97,11 +97,17 @@ To run the application, you simply need to run the `app.py` script in this repos
 
 - **Database:** The application employs an Azure SQL Database as its database system to store order-related data.
 
+- **Version Control:** Leveraging GitHub for robust version control and efficient, collaborative code management. 
+
 - **Containerization:** Docker is utilised to create a containerized environment for the app, to ensure seamless deployment and scalability.
 
 - **Infrastructure as Code (Iac):** Terraform is leveraged to create configuration files to assist with deployment, scalability, and orchestration of the containerized application seamlessly on Azure Kubernetes Service (AKS).
 
-- **Orchestration:** The open-source container application platform, Kubernetes, is used for automating the deployment, scaling, and management of the containerized application. 
+- **Orchestration:** The open-source container application platform, Kubernetes, is used for automating the deployment, scaling, and management of the containerized application.
+
+- **Continous Integration and Continuous Deployment (CI/CD):** Employed Azure DevOps for streamlined CI/CD processes, and efficient integration with Docker Hub and Azure Kubernetes Service (AKS).
+
+- **Monitoring:** Applied Azure Monitor for AKS to gain insights into the health, performance, and reliability of Azure Kubernetes Service (AKS) clusters. 
 
 ## Containerization with Docker
 
