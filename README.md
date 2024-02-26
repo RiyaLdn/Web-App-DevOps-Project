@@ -26,6 +26,11 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
 - [CI/CD Pipeline with Azure DevOps](#ci/cd-pipeline-with-azure-devops)
      - [Configurations and Settings](#configurations-and-settings)
      - [Validation and Testing](#validation-and-testing)
+- [AKS Cluster Monitoring](#aks-cluster-monitoring)
+     - [Metrics Explorer](#metrics-explorer)
+     - [Log Analytics](#log-analytics)
+     - [Alarms](#alarms)
+     - [Potential Response Procedures](#potential-response-procedures)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -54,9 +59,13 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
 To re-implement the delivery date feature, follow the steps below: 
 
 1. **Step 1:** Modify the order class in the `app.py` file. Add a `delivery-date` column to the class attributes.
+
 2. **Step 2:** In the route to add orders section of code, `app.route`, update the form to include the `deliver_date` field.
+
 3. **Step 3:** Also in the route to add orders section of code, `app.route`, add `delivery_date` to the bottom of the `new_order` variables list.
+
 4. **Step 4:** In the `order.html` template, update the table header and rows to include the `delivery_date` column. Modify the `<th>` elements and the `{% for order in orders %}` loop accordingly.
+
 5. **Step 5:** Again in the `order.html` template, modify the `<form>` element to include an input field for the `delivery_date` column.
 
 These are all the steps necessary to facilitate all the functionality of the web application to support a new column `delivery_date`.
@@ -101,11 +110,17 @@ To run the application, you simply need to run the `app.py` script in this repos
 A Dockerfile is used to containerize this application, encapsulating all necessary dependencies and configuration settings. In particular: 
 
 - It defines the steps required to build the Docker image for the application.
+
 - Sets up the working directory.
+
 - Copies packages.
+
 - Installs dependencies.
+
 - Copies the application's code to the container.
+
 - Exposes the port where the app will run.
+
 - Defines how to start the application.
 
 The following steps were taken to containerize this application specifically: 
@@ -149,15 +164,20 @@ CMD ["python", "app.py"]
 ### Docker Commands
 
 1. **Building the Docker Image:** ``` docker build -t your-image-name:your-tag . ``` This command builds a Docker image from the current directory and tags it with the specified name and tag. Make sure to replace `your-image-name:your-tag` with the specified name and tag. 
+
 2. **Running Containers:** ``` docker run -p port:port your-image-name:your-tag ``` This command runs a container based on the specified image. It also maps port 5000 on the host to port 5000 in the container. 
+
 3. **Tagging Image:** ``` docker tag your-image-name:your-tag your-dockerhub-username/your-repo:your-tag ``` This command tags the image. Replace `your-dockerhub-username` and `your-repo:your-tag` with the actual information.
+
 4. **Pushing Image to Docker Hub:** ``` docker push your-dockerhub-username/your-repo:your-tag ``` This command pushes the image to Docker Hub. 
 
 ### Image Information
 
 1. **Docker Image Details:**
      - `your-image-name` = `python`
+     
      - `your-tag` = `3.8-slim`
+     
      - `port` = `5000`
 
 2. **Instructions for Use:**
@@ -180,9 +200,13 @@ Within this section, we will cover the process of defining networking services a
 The following networking resources are provisioned within this module:
 
 - Azure Resource Group: allows for the organisation and management of related Azure resources, such as VMs, storage accounts, virtual networking, etc.
+
 - Virtual Network (VNet): allows to securely connect Azure resources and to on-premises networks.
+
 - Control Plane Subnet: a subnet within the Virtual Network that hosts the control plane components of Azure Kubernetes Service (AKS).
+
 - Worker Node Subnet: a subnet within the Virtual Network dedicated to hosting the worker nodes of an AKS cluster. 
+
 - Network Security Group (NSG): a security rule set that controls inbound and outbound traffic to network interfaces (NIC), VMs, and subnets.
 
 To reference the configuration in the relevant file, check out [main.tf](aks-terraform/modules/networking-module/main.tf).  
@@ -198,8 +222,11 @@ To reference the configuration in the relevant file, check out [variables.tf](ak
 3. **Output Variables**
 
 - `vnet_id`: allows reference to the VNet, allowing other modules/components to associate with this specific network. 
+
 - `control_plane_subnet`: allows reference to the control plane subnet for configuring AKS-specific settings or associating resources.
+
 - `worker_node_subnet_id`: allows reference to where worker nodes are deployed, for configuration with other components.
+
 - `aks_nsg_id`: allows reference to the NSG associated with the AKS cluster, allowing for configuration with other resources. 
 
 All of these output variables are essential for creating easy reference, integration, and configuration with other modules and components in the project. 
@@ -214,7 +241,9 @@ To reference the configuration in the relevant file, check out [outputs.tf](aks-
 The following AKS CLuster resources are provisioned within this module:
 
 - Azure Kubernetes Cluster: serves as the orchestration platform for the containerised application. It provides a scalable environment for running containers.
+
 - Default Node Pool: This default node pool hosts the workload of the application and can be scaled based on demand. 
+
 - Service Principle: The service principle allows the AKS Cluster to interact with other Azure resources securely.
 
 To reference this configuration in the relevant file, check out [main.tf](aks-terraform/modules/aks-cluster-module/main.tf).
@@ -222,10 +251,15 @@ To reference this configuration in the relevant file, check out [main.tf](aks-te
 3. **Input Variables**
 
 - `aks_cluster_name`: this variable represents the name assigned to the AKS cluster.
+
 - `cluster_location`: specifies the Azure region where the AKS cluster will be deployed. 
+
 - `dns_prefix`: defines the DNS prefix for the AKS cluster; this allows for the application to be accessed over the internet.
+
 - `kubernetes_version`: specifies the version of Kubernetes that the AKS cluster will use.
+
 - `client_id`: aa ID that is associated with the service principle, which is used for secure  authentication and access to the AKS cluster. 
+
 - `client_secret`: a secure credential that is associated with the service principle, which is used for secure authentication and access to the AKS cluster. 
 
     **Input Variables from Networking Module**
@@ -233,8 +267,11 @@ To reference this configuration in the relevant file, check out [main.tf](aks-te
     These variables are integrated from the networking module into the AKS cluster module. This is necessary as    the networking module plays an important role in establishing the networking resources for the AKS cluster.
   
     - `resource_group_name`
+      
     - `vnet_id`
+    
     - `control_plane_subnet`
+    
     - `worker_node_subnet_id`
 
 To reference this configuration in the relevant file, check out [variables.tf](aks-terraform/modules/aks-cluster-module/variables.tf).
@@ -242,7 +279,9 @@ To reference this configuration in the relevant file, check out [variables.tf](a
 5. **Output Variables**
 
 - `aks_cluster_name`: this output variable is useful for obtaining the AKS cluster name after it has been successfully provisioned
-- `aks_cluster_id`: a unique identifier associated with the provisoned cluster. 
+  
+- `aks_cluster_id`: a unique identifier associated with the provisoned cluster.
+  
 - `aks_kubeconfig`: captures the Kubernetes configuration file for the AKS cluster. This file is essential for using tools like `kubectl` to interact with the AKS cluster.
 
 To reference this configuration in the relevant file, check out [outputs.tf](aks-terraform/modules/aks-cluster-module/outputs.tf).
@@ -317,16 +356,21 @@ To view the main project configuration file, check out [main.tf](aks-terraform/m
 The Deployment manifest for this application defines the desired state for the deployment of the containerized web application. The key configurations are as follows: 
 
 - **Pod Replicas:** For this particular application we chose to have 2 pod replicas, to ensure scalability and high availability of the application.
-- **Selectors and Labels:** For this particular application, we have used selectors and labels to uniquely identify the application. In this case, we have used `app:flask-app` as a label establishing a clear connection between the pods and the application being managed. 
+  
+- **Selectors and Labels:** For this particular application, we have used selectors and labels to uniquely identify the application. In this case, we have used `app:flask-app` as a label establishing a clear connection between the pods and the application being managed.
+  
 - **Container Configuration:** The manifest is configured to point to the specific Docker Hub container housing our application. The Docker image (`riyaldn/my_image.1`) and its version are crucial parameters to ensure the correct image is used.
+  
 - **Port Configuration:** For this application, we have exposed port 5000 to enable communication within the AKS cluster, serving as the gateway for accessing the application's user interface. 
 
 #### Service 
 
 The Service manifest is necessary for facilitating internal communication with the AKS cluster. The key configurations are as follows: 
 
-- **Service Type:** For this particular application, we have used a ClusterIP service type, designating it as it is an internal service within the AKS cluster. 
+- **Service Type:** For this particular application, we have used a ClusterIP service type, designating it as it is an internal service within the AKS cluster.
+  
 - **Selector Matching:** The service selector matches the labels (app: flask-app) of the pods defined in the Deployment manifest. This alignment guarantees that the traffic is efficiently directed to the appropriate pods, maintaining seamless internal communication within the AKS cluster.
+  
 - **Port Configuration:** The service uses TCP protocol on port 80 for internal communication within the cluster, with the target port set to 5000, aligning with the port exposed by our container.
 
 To check out the deployment and service manifests file, check out [application-mainfest.yaml](application-manifest.yaml)
@@ -343,8 +387,10 @@ This Rolling Updates strategy also supports scalability by allowing the deployme
 
 Once the Kubernetes manifests are deployed to AKS, it is necessary to conduct thorough testing to validate functionality and reliability within the AKS cluster. The following checks are conducted:
 
-- **Pod Validation:** To check all the pods were running as expected, we used the command `kubectl get pods`. 
+- **Pod Validation:** To check all the pods were running as expected, we used the command `kubectl get pods`.
+  
 - **Service Validation:** We confirmed that services were correctly exposed within the cluster, allowing internal communication.
+  
 - **Port Forwarding:** To initiate port forwarding, we used the command, `kubectl port-forward <pod-name> 5000:5000`, to access and interact with the application locally at http://127.0.0.1:5000.
 
 Through conducting these tests, we can ensure the functionality and reliability of the application within the AKS cluster. 
@@ -360,7 +406,9 @@ As this application is intended for internal use within an organisation, we can 
 LoadBalancers would be an ideal method to distribute the application to internal users as the service will be exposed externally within the cluster. Meaning the service remains isolated within the organisation's network, preventing unauthorised access.
 
 1. Firstly, we would update the Service manifest and change the `type` field to `LoadBalancer`.
+
 2. Then we would apply the changes, `kubectl apply -f service.yaml`, and observe the external IP using `kubectl get services`.
+
 3. Finally, this IP address will be used as the entry point to accessing the service. 
 
 However, it must be noted that several other methods could also be used to distribute the service to other internal users. 
@@ -376,9 +424,13 @@ Ingress controllers with a Service type of LoadBalancers are designed to handle 
 1. It is important to note, that to use this method, an ingress controller must be installed: 
     a. To enable Ingress in Minikube, use the following command: `minikube addons enable ingress`. 
     b. Verify the Ingress controller is working by checking the status of the pods: `kubectl get pods -n ingress-nginx`. 
-2. Next, we would start with a LoadBalancer service type, similar to the example given for [Internal Users](#internal-users).
+
+2.  Next, we would start with a LoadBalancer service type, similar to the example given for [Internal Users](#internal-users).
+
 3. Then we would create an Ingress resource: `kind: Ingress`, and would follow the standard steps to define routing rules and other configurations.
+
 4. Apply the changes `kubectl apply -f ingress.yaml`.
+
 5. Finally, the service can be accessed by the IP address defined in the `host` field of the file.
 
 **Security Considerations:** 
@@ -445,7 +497,9 @@ The release pipeline is defined in the [azure-pipelines.yml](azure-pipelines.yml
 It is necessary to set up a service connection between Azure DevOps and the Docker Hub account where the application image is stored. This is to facilitate the seamless integration of the CI/CD pipeline with the Docker Hub container registry. This was done by:
 
 1. Creating a personal access token on Docker Hub.
+
 2. Configuring an Azure DevOps service connection to utilize this token.
+   
 3. Verifying that the connection had been successfully established.
 
 
@@ -454,17 +508,120 @@ It is necessary to set up a service connection between Azure DevOps and the Dock
 After configuring the CI/CD pipeline, including both the build and release components, it is necessary to test and validate its functionality. This ensures seamless execution of the deployment process and verifies that the application performs as expected on the AKS cluster. This was done by: 
 
 1. Monitoring the current status of the pods using `kubectl get pods`.
+
 2. For a more detailed inspection of the pods and their health, we used `kubectl describe pod <pod-name>`.
+
 3. To verify that the application was released and performed as expected, we used `kubectl port-forward <pod-name> 5000:5000`.
+
 4. Once the port forward was completed, we were able to access the application successfully at http://127.0.0.1:5000. 
 
+## AKS Cluster Monitoring
 
+Enabling Container Insights for AKS Cluster Monitoring is crucial as it provides tools for collecting real-time in-depth performance and diagnostic data. This  allows for efficient monitoring of the application performance and troubleshooting of issues.
 
+### Metric Explorer 
+
+The following charts have been created and configured to show real-time data on the applications performance: 
+
+1. **Average Node CPU Usage**
+
+- Average Node CPU Usage indicates how much of the available CPU resources are being used on average.
+
+- This provides insights into the resource utilisation of the nodes. Helping to ensure that the cluster has enough capacity to handle the workload efficiently.
+
+- In normal operation, it is expected to see fluctuations in CPU Usage corresponding to workload. However, if CPU usage is consistently high, this may indicate resource constraints. 
+
+![Screenshot 2024-02-26 201404](https://github.com/RiyaLdn/Web-App-DevOps-Project/assets/150186735/cea87048-f731-45d0-b5d9-78644c261b9d)
+
+3. **Average Pod Count**
+
+- Average Pod Count tracks the average number of pods running on each node in the Kubernetes cluster.
+
+- This provides insights into workload distribution and resource allocation.
+
+- A steady average pod count indicated effective workload distribution and resource allocation.
+
+![Screenshot 2024-02-26 201428](https://github.com/RiyaLdn/Web-App-DevOps-Project/assets/150186735/74642f69-ca8a-4cc4-9401-ac19475eda5c)
+
+4. **Used Disk Percentage**
+
+- The Used Disk Percentage metric is a crucial indicator of storage consumption within your Kubernetes cluster.
+
+- This metric tracks the percentage of disk space used on each node in the Kubernetes cluster
+
+- A steady used disk percentage indicates healthy disk utilisation. 
+
+![Screenshot 2024-02-26 201454](https://github.com/RiyaLdn/Web-App-DevOps-Project/assets/150186735/cf97016d-e07d-479c-8203-27ea859a0d88)
+
+5. **Bytes Read and Written per Second**
+
+- This metric tracks the rate at which data is read from and written to storage devices on each node in the Kubernetes cluster.
+
+- A balanced and consistent rate of bytes read and written per second indicates healthy storage performance and suggests data is being processed efficiently. 
+
+![Screenshot 2024-02-26 201502](https://github.com/RiyaLdn/Web-App-DevOps-Project/assets/150186735/f511cd96-f1b3-49b2-b631-a2e5dcf681d8)
+
+### Log Analytics 
+
+Log Analytics are extremely useful when looking at data on container-level logs. This allows us to dig into the details of what's happening inside the containers. You can filter, search, and analyse logs to troubleshoot issues and monitor application behavior. The following logs have been configured in this project: 
+
+- **Average Node CPU Usage Percentage per Minute:** This configuration captures data on node-level usage in extreme detail, with logs recorded per minute. 
+  
+- **Average Node Memory Usage Percentage per Minute:** This configuration tracks memory usage at node level and allows you to detect memory-related performance concerns and efficiently allocate resources. 
+
+- **Pods Counts with Phase:** This configuration provides information on the count of pods with different phases, such as Pending, Running, or Terminating. It offers insights into pod lifecycle management and helps ensure the cluster's workload is appropriately distributed.
+
+- **Find Warning Value in Container Logs:** This configuration searches for "warning" values in container logs, helping to proactively detect issues or errors within containers, allowing for prompt troubleshooting and issue resolution. 
+
+- **Monitoring Kubernetes Events:** This configuration monitors Kubernetes events, such as pod scheduling, scaling activities, and errors. This is essential for tracking the overall health and stability of the cluster.
+
+Below are some visual examples of the **Find Warning Value in Container Logs** and **Monitoring Kubernetes Events**. 
+
+![image](https://github.com/RiyaLdn/Web-App-DevOps-Project/assets/150186735/bb19387b-1f25-420c-a673-b8b414a740fe)
+![Screenshot 2024-02-26 210738](https://github.com/RiyaLdn/Web-App-DevOps-Project/assets/150186735/e7dcfa6d-827f-456c-9090-b3d01b1330cf)
+
+### Alarms
+
+Alert rules are essential to help define the conditions and thresholds for alerting when specific events occur. For example, when the CPU Usage reaches the threshold. The following three alarms are provisioned for this project: 
+
+- **Working Set Percentage:**
+
+    - This alert triggers an alarm when the total available memory in the AKS cluster exceeds 80%.
+ 
+    - The alert checks every 5 minutes and has a loopback period of 15 minutes.
+        
+    - When the alert is triggered, it is configured to send an email containing the warning to my email address.
+
+- **CPU Usage Alert:**
+
+    -This alert triggers an alarm when the CPU usage in the AKS cluster exceeds 80%.
+
+    - The alert checks every 5 minutes and has a loopback period of 15 minutes.
+        
+    - When the alert is triggered, it is configured to send an email containing the warning to my email address. 
+
+- **Critical Alerts Action Group:**
+
+    - This alert triggers an alarm when the used disk percentage in the AKS cluster exceeds 90%
+
+    - The alert checks every 5 minutes and has a loopback period of 15 minutes.
+        
+    - When the alert is triggered, it is configured to send an email containing the warning to my email address. 
+
+### Potential Response Procedures
+
+Several response procedures can be activated when an alert is triggered. Below are some examples of how we may respond to any potential alerts. 
+
+- **High CPU Usage Alert:** If a high CPU usage alert is triggered, we may consider adding more nodes to the AKS cluster, or optimising resource-intensive workloads.
+
+- **Node Overload:** If nodes are reaching their capacity, auto-scaling can be configured in metrics. This can help dynamically adjust the number of nodes based on workloads. This would ensure optimal resource allocation.
+
+- **Low Disk Percentage:** There is also the possibility of the underutilisation of resources. If there is a consistently low disk percentage, it could be an indication that storage resources are inappropriately sized for the given workload. 
 
 ## Contributors 
 
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
-- [Riya Longia]
+- [Riya Longia]([https://github.com/yourusername](https://github.com/RiyaLdn))
 
 ## License
 
