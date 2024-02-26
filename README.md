@@ -162,28 +162,6 @@ CMD ["python", "app.py"]
 
 Within this section, we will cover the process of defining networking services and AKS Cluster services using Terraform. Specifically this section will explain how each resource is created, its purpose, and its dependencies. 
 
-### Terraform Provider Setup
-
-Within the main configuration file, we have used the Azure provider for Terraform. Below is an example of the provider configuration we have used in this project: 
-
-```
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "=3.0.0"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {}
-client_id = var.client_id
-client_secret = var.client_secret
-subscription_id = var.subscription_id
-tenant_id = var.tenant_id
-}
-```
 ### Terraform Modules
 
 #### Networking Module
@@ -262,12 +240,64 @@ To reference this configuration in the relevant file, check out [outputs.tf](aks
 
 ### Main Project Configuration
 
+#### Terraform Provider Setup
+
+Within the main configuration file, we have used the Azure provider for Terraform. Below is an example of the provider configuration we have used in this project: 
+
+```
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=3.0.0"
+    }
+  }
+}
+
+provider "azurerm" {
+  features {}
+client_id = var.client_id
+client_secret = var.client_secret
+subscription_id = var.subscription_id
+tenant_id = var.tenant_id
+}
+```
+
 #### Connecting to the Networking Module 
+
+Within the main configuration file for the project, it is necessary to connect to the networking module by referencing it. This integration will ensure that the networking resources previously defined in their respective module are included, and therefore accessible in the main project. The input variables are as follows:
+
+```
+module "networking" {
+  source = "./modules/networking-module" 
+  resource_group_name = "networking-resource-group"
+  location            = "UK South"
+  vnet_address_space  = ["10.0.0.0/16"]
+}
+```
 
 #### Connecting to the AKS Cluster
 
+In the main configuration file, it is also necessary to reference the AKS cluster module. This connects the AKS cluster specifications to the main project, as well as allowing for the cluster to be provisioned with the previously defined networking infrastructure. The input variables are as follows:
 
-ADD LINKS TO RELEVANT FILES IN THE FOLDER, INSTEAD OF ADDING THE WHOLE CODE LIKE FOR DOCKER. CAN PROBABLY CHANGE THIS FOR DOCKER TOO. 
+```
+module "aks-cluster-module" {
+  source = "./modules/aks-cluster-module"
+  aks_cluster_name            = "terraform-aks-cluster"
+  cluster_location            = "UK South"
+  dns_prefix                  = "myaks-project"
+  kubernetes_version          = "1.29.0"
+  client_id                   = var.client_id
+  client_secret               = var.client_secret
+  resource_group_name         = module.networking.resource_group_name
+  vnet_id                     = module.networking.vnet_id
+  control_plane_subnet_id     = module.networking.control_plane_subnet_id
+  worker_node_subnet_id       = module.networking.worker_node_subnet_id
+} 
+
+```
+
+To view the main project configuration file, check out [main.tf](aks-terraform/modules/main.tf)
 
 
 
