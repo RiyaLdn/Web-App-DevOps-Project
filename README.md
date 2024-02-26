@@ -20,6 +20,9 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
                 - [AKS Cluster Module](#aks-cluster-module)
     - [Main Project Configuration](#main-project-configuration)
 - [Kubernetes Deployment to AKS](#kubernetes-deployment-to-AKS)
+     - [Deployment and Service](#deployment-and-service)
+     - [Deployment Strategy](#deployment-strategy)
+     - [Testing and Validation](#testing-and-validation)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -373,7 +376,7 @@ Ingress controllers with a Service type of LoadBalancers are designed to handle 
 4. Apply the changes `kubectl apply -f ingress.yaml`.
 5. Finally, the service can be accessed by the IP address defined in the `host` field of the file.
 
--**Security Considerations:** 
+**Security Considerations:** 
 
 To maintain secure external access to the application, it is possible to implement SSL termination in this case. 
 
