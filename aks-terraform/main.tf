@@ -42,5 +42,3 @@ module "aks-cluster-module" {
 } 
 
 
-
-
