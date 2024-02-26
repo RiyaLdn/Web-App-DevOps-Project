@@ -590,7 +590,7 @@ Below are some visual examples of the **Find Warning Value in Container Logs** a
 
 Alert rules are essential to help define the conditions and thresholds for alerting when specific events occur. For example, when the CPU Usage reaches the threshold. The following three alarms are provisioned for this project: 
 
-- **Working Set Percentage:**
+**Working Set Percentage:**
 
     - This alert triggers an alarm when the total available memory in the AKS cluster exceeds 80%.
  
@@ -598,7 +598,7 @@ Alert rules are essential to help define the conditions and thresholds for alert
         
     - When the alert is triggered, it is configured to send an email containing the warning to my email address.
 
-- **CPU Usage Alert:**
+**CPU Usage Alert:**
 
     -This alert triggers an alarm when the CPU usage in the AKS cluster exceeds 80%.
 
@@ -606,7 +606,7 @@ Alert rules are essential to help define the conditions and thresholds for alert
         
     - When the alert is triggered, it is configured to send an email containing the warning to my email address. 
 
-- **Critical Alerts Action Group:**
+**Critical Alerts Action Group:**
 
     - This alert triggers an alarm when the used disk percentage in the AKS cluster exceeds 90%
 
