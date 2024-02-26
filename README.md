@@ -638,17 +638,73 @@ To enhance security and efficient secret management, we have integrated Azure Ke
 **Assigned Permissions**
 
 - To have full control over the Key Vault, I granted myself the highest level of access, known as the **Key Vault Administrator**. Administrators can manage access policies, configure advanced settings, and perform any operation within the Key Vault.
-
-
-
-
- 
+  
 ### Secrets Stored in the Key Vault
 
+Our application relies on several secrets stored in Azure Key Vault. Each secret serves a specific purpose:
 
-### AKS Integration with Key Vault
+**Data Base:** Stores the name of the database to connect to. 
+
+**Server:** Stores the address of the database server.
+
+**Username:** Stores the username for authenticating and gaining access to the database. 
+
+**Access Token:** Stores password associated with the username for authenticating and gaining access to the database. 
+
+### Integrating Azure Key Vault with AKS
+
+For extra security, we integrated AKS with Azure Key Vault. 
+
+#### Managed Identity 
+
+To allow for the AKS Cluster to authenticate and securely interact with the Key Vault, we have to enable Managed Identity. In this case, we used a User-Assigned Managed Identity, using the following commands:
+
+1. `az identity create -g myResourceGroup -n myUserAssignedIdentity`: this creates the User-Assigned Managed Identity
+
+2. `az resource identity assign --resource-group myResourceGroup --name myResource --identities myUserAssignedIdentity`: this assigns the User-Assigned Managed Identity to an existing resource.
+
+3. `az aks update --resource-group <resource-group> --name <aks-cluster-name> --enable-managed-identity`: this command enables managed identity for the existing AKS cluster.
+
+#### Assigning Key Vault Permissions
+
+Here we will use a Role-Based Access Control (RBAC) approach to managing permissions. We will assign the RBAC role of **Key Vault Secrets Officer** to the Managed Identity. This role provides permissions to read, list, set, and delete secrets, certificates, and keys within the specified Azure Key Vault: 
+
+```
+az role assignment create --role "Key Vault Secrets Officer" \
+  --assignee <managed-identity-client-id> \
+  --scope subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.KeyVault/vaults/{key-vault-name}
+```
+
+Replace <managed-identity-client-id> with the actual Managed Identity's client ID noted in the previous section, and update the scope to match your subscription, resource group, and Key Vault details. 
 
 ### Changes to Application Code
+
+Finally, we had to create some changes to the application code to incorporate the Managed Identity credentials. This means we can securely retrieve the database connection details from the Key Vault.
+
+In the [app.py](app.py) file, we added the following libraries: 
+
+```
+pip install azure-identity
+pip install azure-keyvault-secrets
+```
+
+Then the following changes were made to the code: 
+
+```
+from azure.identity import ManagedIdentityCredential
+from azure.keyvault.secrets import SecretClient
+
+key_vault_url = "https://RiyaKey.vault.azure.net/"
+
+credential = ManagedIdentityCredential()
+secret_client = SecretClient(vault_url=key_vault_url, credential=credential)
+
+secret = secret_client.get_secret("secret-name")
+
+secret_value = secret.value
+```
+
+Make sure to follow these steps to maintain a robust and secure secrets management system for our project.
 
 ## Contributors 
 
