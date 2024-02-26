@@ -32,6 +32,10 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
      - [Alarms](#alarms)
      - [Potential Response Procedures](#potential-response-procedures)
 - [AKS integration for Azure Key Vault for Secrets Management](#aks-integration-for-azure-key-vault-for-secrets-management)
+     - [Azure Key Vault Setup](#azure-key-vault-setup)
+     - [Secrets Stored in the Key Vault](#secrets-stored-in-the-key-vault)
+     - [Integrating Azure Key Vault with AKS](#integrating-azure-key-vault-with-aks)
+     - [Changes to Application Code](#changes-to-application-code)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -108,7 +112,9 @@ To run the application, you simply need to run the `app.py` script in this repos
 
 - **Continous Integration and Continuous Deployment (CI/CD):** Employed Azure DevOps for streamlined CI/CD processes, and efficient integration with Docker Hub and Azure Kubernetes Service (AKS).
 
-- **Monitoring:** Applied Azure Monitor for AKS to gain insights into the health, performance, and reliability of Azure Kubernetes Service (AKS) clusters. 
+- **Monitoring:** Applied Azure Monitor for AKS to gain insights into the health, performance, and reliability of Azure Kubernetes Service (AKS) clusters.
+
+- **Secrets Management:** Utilised Azure Key Vault as a secure and centralized service for managing secrets. 
 
 ## Containerization with Docker
 
